@@ -4,9 +4,6 @@
     {
         public required IRepository Repository { get; init; }
 
-        /// <summary>
-        /// Create Table
-        /// </summary>
         public async Task Do()
         {
             await Repository.CreateTable();
