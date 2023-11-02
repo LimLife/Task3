@@ -5,7 +5,7 @@
         public required IRepository Repository { get; init; }
 
         public async Task Do()
-        {
+        {        
             await Repository.CreateTable();         
         }
     }

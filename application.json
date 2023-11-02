@@ -1,4 +1,7 @@
 {
+  "ConnectionStrings": {
+    "employee": "Data Source=Employee.db;Mode=ReadWriteCreate;"
+  },
   "firstNameMale": [
     "Bob",
     "Dave",

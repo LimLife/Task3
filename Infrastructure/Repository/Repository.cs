@@ -35,6 +35,7 @@ namespace Task031023.Infrastructure.Repository
         public async Task CreateTable()
         {
             await Context.Database.MigrateAsync();
+            await Console.Out.WriteLineAsync("Created to Repo");
         }
 
         public async Task<List<Employee>> GetEmployeeStartsWith()
