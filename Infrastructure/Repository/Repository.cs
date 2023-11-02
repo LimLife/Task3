@@ -12,18 +12,16 @@ namespace Task031023.Infrastructure.Repository
         public async Task AddEmployee(List<Employee> employees)
         {
             if (!Context.Database.CanConnect()) { Console.WriteLine("DB not created"); return; };
-            using (var transaction = await Context.Database.BeginTransactionAsync())
+            using var transaction = await Context.Database.BeginTransactionAsync();
+            try
             {
-                try
-                {
-                    await Context.Employees.AddRangeAsync(employees);
-                    await Context.SaveChangesAsync();
-                    transaction.Commit();
-                }
-                catch (Exception)
-                {
-                    transaction.Rollback();
-                }
+                await Context.Employees.AddRangeAsync(employees);
+                await Context.SaveChangesAsync();
+                transaction.Commit();
+            }
+            catch (Exception)
+            {
+                transaction.Rollback();
             }
         }
 

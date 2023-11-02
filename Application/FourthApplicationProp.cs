@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using System.Threading.Channels;
 using Task031023.Application.Entity;
 using Task031023.Domain;
 
@@ -8,44 +9,53 @@ namespace Task031023.Application
     {
         public required IRepository Repository { get; init; }
 
-        private const int ITEMS = 1000000;
+        private const int Items = 1000000;
         private RandomEmployee _randomEmployee { get; init; } = new RandomEmployee();
 
         public async Task Do()
         {
-            var employye = new BlockingCollection<List<Employee>>();
-            var list = new List<Task>();
+            var employeeChannel = Channel.CreateBounded<List<Employee>>(new BoundedChannelOptions(4)
+            {
+                FullMode = BoundedChannelFullMode.Wait
+            });
+
+            var producerTasks = new List<Task>();
             for (int i = 0; i < 4; i++)
             {
-                list.Add(Task.Run(() =>
+                producerTasks.Add(Task.Run(async () =>
                 {
-                    var batch = new List<Employee>();
-                    for (int j = 0; j < ITEMS / 4; j++)
+                    try
                     {
-                        batch.Add(_randomEmployee.GetEmployees());
-                        if (batch.Count >= 10000)
+                        var batch = new List<Employee>();
+                        for (int j = 0; j < Items / 4; j++)
                         {
-                            employye.Add(batch);
-                            batch = new List<Employee>();
+                            batch.Add(_randomEmployee.GetEmployees());
+                            if (batch.Count >= 10000)
+                            {
+                                await employeeChannel.Writer.WriteAsync(batch);
+                                batch = new List<Employee>();
+                            }
+                        }
+                        if (batch.Count > 0)
+                        {
+                            await employeeChannel.Writer.WriteAsync(batch);
                         }
                     }
-                    if (batch.Count > 0)
+                    finally
                     {
-                        employye.Add(batch);
+                        employeeChannel.Writer.Complete();
                     }
                 }));
             }
 
             var consumerTask = Task.Run(async () =>
             {
-                foreach (var employee in employye.GetConsumingEnumerable())
+                await foreach (var employee in employeeChannel.Reader.ReadAllAsync())
                 {
                     await Repository.AddEmployee(employee);
                 }
             });
-
-            await Task.WhenAll(list);
-            employye.CompleteAdding();
+            await Task.WhenAll(producerTasks);
             await consumerTask;
         }
     }

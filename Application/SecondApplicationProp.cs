@@ -6,7 +6,7 @@ namespace Task031023.Application
     public class SecondApplicationProp : IApplicationProperty
     {
         public required IRepository Repository { get; init; }
-        public Task Do()
+        public async Task Do()
         {
             Console.WriteLine("Input format for Example: \"Ivanov Petr Sergeevich\" 2009-07-12 Male");
             string str = Console.ReadLine();
@@ -40,11 +40,10 @@ namespace Task031023.Application
                         DateOfBirth = birthDate,
                         Gender = genderParse
                     };
-                    Repository.AddEmployee(employee);
+                  await  Repository.AddEmployee(employee);
                 }
                 else Console.WriteLine("Gender Exception");
             }
-            return Task.CompletedTask;
         }
     }
 }

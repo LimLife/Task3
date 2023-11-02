@@ -22,9 +22,9 @@ namespace Task031023.Application
             this.MessageInfoApplication(parameters);
             _app.TryGetValue(parameters, out _applicationProperty);
         }
-        public void Do()
+        public async Task Do()
         {
-            _applicationProperty.Do();
+            await _applicationProperty.Do();
         }
     }
 }
