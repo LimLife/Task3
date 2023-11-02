@@ -13,7 +13,7 @@ namespace Task031023.Application
             if (string.IsNullOrEmpty(str))
             {
                 Console.WriteLine("Empty input");
-                Do();
+                await Do();
             }
             string pattern = "\"([^\"]*)\" (\\d{4}-\\d{2}-\\d{2}) (\\w+)";
             Match match = Regex.Match(str, pattern);
@@ -40,9 +40,8 @@ namespace Task031023.Application
                         DateOfBirth = birthDate,
                         Gender = genderParse
                     };
-                  await  Repository.AddEmployee(employee);
+                    await Repository.AddEmployee(employee);
                 }
-                else Console.WriteLine("Gender Exception");
             }
         }
     }

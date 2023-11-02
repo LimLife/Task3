@@ -30,11 +30,11 @@ namespace Task031023.Application
                     _state = State.Working;
                     break;
                 case State.Working:
-                  await  _appclication.Do();
+                    await _appclication.Do();
                     this.Message("Enter: 'Choose' for Choose another parameters applications");
                     this.Message("Enter: 'End' for Close application");
                     str = Console.ReadLine();
-                    if (string.IsNullOrEmpty(str)) {await Input(); }
+                    if (string.IsNullOrEmpty(str)) { await Input(); }
                     if (str.ToLower() == "choose") { _state = State.Choose; this.ChooseParameters(); }
                     if (str.ToLower() == "end") _state = State.End;
                     break;
@@ -42,32 +42,11 @@ namespace Task031023.Application
                     Environment.Exit(0);
                     break;
             }
-            Input(); 
+            await Input();
         }
     }
 }
 
 
 
-class Application
-{
-    public event Action<string> LineRead;
-
-    public void Start()
-    {
-        LineRead += OnLineRead;
-
-        while (true)
-        {
-            var line = Console.ReadLine();
-            LineRead?.Invoke(line);
-        }
-    }
-
-    private void OnLineRead(string line)
-    {
-        // Обработка ввода пользователя
-        Console.WriteLine($"Вы ввели: {line}");
-    }
-}
 
