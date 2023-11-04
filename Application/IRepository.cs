@@ -4,10 +4,10 @@ namespace Task031023.Application
 {
     public interface IRepository
     {
-        public Task CreateTable();
-        public Task AddEmployee(List<Employee> employees);
-        public Task<List<Employee>> GetEmployeeUnique();
-        public Task<List<Employee>> GetEmployeeStartsWith();
-        public Task AddEmployee(Employee employee);
+        public Task CreateTableAsync();
+        public Task AddEmployeeAsync(List<Employee> employees);
+        public Task<List<Employee>> GetEmployeeUniqueAsync();
+        public Task<List<Employee>> GetEmployeeStartsWithAsync();
+        public Task AddEmployeeAsync(Employee employee);
     }
 }

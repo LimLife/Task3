@@ -40,7 +40,7 @@ namespace Task031023.Application
                         DateOfBirth = birthDate,
                         Gender = genderParse
                     };
-                    await Repository.AddEmployee(employee);
+                    await Repository.AddEmployeeAsync(employee);
                 }
             }
         }

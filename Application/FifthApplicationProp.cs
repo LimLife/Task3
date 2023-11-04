@@ -8,7 +8,7 @@ namespace Task031023.Application
 
         public async Task Do()
         {
-            await Repository.GetEmployeeStartsWith();
+            await Repository.GetEmployeeStartsWithAsync();
         }
     }
 }

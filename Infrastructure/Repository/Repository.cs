@@ -9,7 +9,7 @@ namespace Task031023.Infrastructure.Repository
     {
         public required EmployeeDB Context { get; init; }
 
-        public async Task AddEmployee(List<Employee> employees)
+        public async Task AddEmployeeAsync(List<Employee> employees)
         {
             if (!Context.Database.CanConnect()) { Console.WriteLine("DB not created"); return; };
             using var transaction = await Context.Database.BeginTransactionAsync();
@@ -25,20 +25,20 @@ namespace Task031023.Infrastructure.Repository
             }
         }
 
-        public async Task AddEmployee(Employee employee)
+        public async Task AddEmployeeAsync(Employee employee)
         {
             if (!Context.Database.CanConnect()) { Console.WriteLine("DB not created"); return; };
             await Context.AddAsync(employee);
             await Context.SaveChangesAsync();
         }
 
-        public async Task CreateTable()
+        public async Task CreateTableAsync()
         {
             await Context.Database.MigrateAsync();
             await Console.Out.WriteLineAsync("Created to Repo");
         }
 
-        public async Task<List<Employee>> GetEmployeeStartsWith()
+        public async Task<List<Employee>> GetEmployeeStartsWithAsync()
         {
             if (!Context.Database.CanConnect()) return null;
             var stopwatch = new Stopwatch();
@@ -51,7 +51,7 @@ namespace Task031023.Infrastructure.Repository
             return result;
         }
 
-        public async Task<List<Employee>> GetEmployeeUnique()
+        public async Task<List<Employee>> GetEmployeeUniqueAsync()
         {
             if (!Context.Database.CanConnect()) return null;
             var result = await Context.Employees.AsQueryable().AsNoTracking()

@@ -8,7 +8,7 @@ namespace Task031023.Application
         public async Task Do()
         {
             var builder = new StringBuilder();
-            var employee = await Repository.GetEmployeeUnique();
+            var employee = await Repository.GetEmployeeUniqueAsync();
             if (employee == null)
             {
                 Console.WriteLine("Data base empty or not created");

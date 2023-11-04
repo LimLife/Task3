@@ -6,7 +6,7 @@
 
         public async Task Do()
         {        
-            await Repository.CreateTable();         
+            await Repository.CreateTableAsync();         
         }
     }
 }

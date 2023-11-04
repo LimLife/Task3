@@ -52,7 +52,7 @@ namespace Task031023.Application
             {
                 await foreach (var employee in employeeChannel.Reader.ReadAllAsync())
                 {
-                    await Repository.AddEmployee(employee);
+                    await Repository.AddEmployeeAsync(employee);
                 }
             });
             await Task.WhenAll(producerTasks);
